@@ -7,47 +7,110 @@
     <title>Visor EasyParser</title>
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <style>
+      body {
+        padding-bottom: 2em;
+      } label {
+        display: block;
+        margin-top: 1em;
+      }
+
+      input, textarea, iframe, table {
+        width: 100%;
+      } iframe {
+        height: 100%;
+      } textarea {
+        resize: vertical;
+      }
+
+      /*
+       * http://wellcaffeinated.net/articles/2012/12/10/very-simple-css-only-proportional-resizing-of-elements/
+       */
+      .aspect-box {
+        width: 100%;
+        position: relative;
+      } .aspect-box > * {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+
+      /* define aspect-ratio */
+      @media (max-width: 768px) {
+        /* vertical layout */
+        .ep-template .aspect-box {
+          padding-top: 50%;
+        } .web-preview .aspect-box {
+          padding-top: 50%;
+        }
+      }
+      @media (min-width: 768px) {
+        /* grid layout */
+        .ep-template .aspect-box {
+          padding-top: 100%;
+        } .web-preview .aspect-box {
+          padding-top: 62.5%;
+        }
+      }
+    </style>
 
     <!--[if lt IE 9]>
       <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-
   <body ng-controller="AppController">
     <div class="container">
       <div class="row">
-        <div class="col-xs-12">
+        <div class="col-sm-12 title">
           <h1>Visor EasyParser</h1>
         </div>
       </div>
 
       <div class="row">
-        <div class="col-xs-12">
-          <label>
-            Página para escrapear: <input ng-model="url">
-          </label>
+        <div class="col-sm-12 target-url">
+          <label>Página para escrapear:</label>
+          <input name="target-url" ng-model="target_url">
         </div>
       </div>
 
       <div class="row">
-        <div class="col-xs-6">
+        <div class="col-sm-6">
           <div class="row">
-            <div class="col-xs-12">
-              <textarea></textarea>
+            <div class="col-sm-12 ep-template">
+              <label>Template de EasyParser:</label>
+              <div class="aspect-box">
+                <textarea></textarea>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="col-xs-6">
+        <div class="col-sm-6">
           <div class="row">
-            <div class="col-xs-12">
-              <iframe ng-src="{{url}}"></iframe>
+            <div class="col-sm-12 web-preview">
+              <label>Visor:</label>
+              <div class="aspect-box">
+                <iframe ng-src="{{target_url}}"></iframe>
+              </div>
             </div>
           </div>
+
           <div class="row">
-            <div class="col-xs-12">
-              lala
+            <div class="col-sm-12 scrape-result">
+              <label>Datos escrapeados:</label>
+              <table>
+                <tr>
+                  <th>Clave</th>
+                  <th>Valor extraído</th>
+                </tr>
+                <tr ng-repeat="(scrape_key, scrape_val) in scrape_result">
+                  <td ng-bind="scrape_key"></td>
+                  <td ng-bind="scrape_val"></td>
+                </tr>
+              </table>
             </div>
           </div>
         </div>
@@ -57,13 +120,13 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js"></script>
-
     <script>
       angular.module('App', [
       ]).config(function($sceProvider) {
         $sceProvider.enabled(false);
       }).controller('AppController', function($scope) {
-        $scope.url = 'http://www.w3schools.com';
+        $scope.target_url = 'http://www.montevideoshopping.com.uy/innovaportal/v/36517/9/montevideo/mosca_office_.html';
+        $scope.scrape_result = {foo:'bar'};
       });
     </script>
   </body>
