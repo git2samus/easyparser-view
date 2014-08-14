@@ -106,9 +106,9 @@
                   <th>Clave</th>
                   <th>Valor extraído</th>
                 </tr>
-                <tr ng-repeat="(scrape_key, scrape_val) in scrape_result">
-                  <td ng-bind="scrape_key"></td>
-                  <td ng-bind="scrape_val"></td>
+                <tr ng-repeat="(index, scraped_pair) in scrape_result">
+                  <td ng-bind="scraped_pair.key"></td>
+                  <td ng-bind="scraped_pair.val"></td>
                 </tr>
               </table>
             </div>
@@ -126,7 +126,11 @@
         $sceProvider.enabled(false);
       }).controller('AppController', function($scope) {
         $scope.target_url = 'http://www.montevideoshopping.com.uy/innovaportal/v/36517/9/montevideo/mosca_office_.html';
-        $scope.scrape_result = {foo:'bar'};
+        $scope.scrape_result = [
+          {key:'foo', val:'bar'},
+          {key:'foo', val:'bar'},
+          {key:'foo', val:'bar'},
+        ];
       });
     </script>
   </body>

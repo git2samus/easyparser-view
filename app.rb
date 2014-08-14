@@ -10,7 +10,10 @@ def result_proc_factory(parse_result)
     matched_attrs = on.public_methods(false).select {|attrname| attrname != :method_missing and !attrname.to_s.end_with?('?') }
     # excise matched pair from scope tree
     matched_attrs.each do |attrname|
-      parse_result << { attrname => on.send(attrname) {|scope| scope.last[attrname.to_s] } }
+      parse_result << {
+        :key => attrname,
+        :val => on.send(attrname) {|scope| scope.last[attrname.to_s] }
+      }
     end
   end
 end
