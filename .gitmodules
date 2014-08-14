@@ -1,0 +1,3 @@
+[submodule "easyparser"]
+	path = easyparser
+	url = git@github.com:gusaaaaa/easyparser.git
