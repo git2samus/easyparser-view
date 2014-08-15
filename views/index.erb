@@ -72,7 +72,7 @@
       <div class="row">
         <div class="col-sm-12 target-url">
           <label>Página para escrapear:</label>
-          <input name="target-url" ng-model="target_url">
+          <input name="target-url" type="url" ng-model="targetUrl">
         </div>
       </div>
 
@@ -93,7 +93,7 @@
             <div class="col-sm-12 web-preview">
               <label>Visor:</label>
               <div class="aspect-box">
-                <iframe ng-src="{{target_url}}"></iframe>
+                <iframe ng-src="{{previewUrl}}"></iframe>
               </div>
             </div>
           </div>
@@ -106,9 +106,9 @@
                   <th>Clave</th>
                   <th>Valor extraído</th>
                 </tr>
-                <tr ng-repeat="(index, scraped_pair) in scrape_result">
-                  <td ng-bind="scraped_pair.key"></td>
-                  <td ng-bind="scraped_pair.val"></td>
+                <tr ng-repeat="(index, scrapedPair) in scrapeResult">
+                  <td ng-bind="scrapedPair.key"></td>
+                  <td ng-bind="scrapedPair.val"></td>
                 </tr>
               </table>
             </div>
@@ -124,13 +124,22 @@
       angular.module('App', [
       ]).config(function($sceProvider) {
         $sceProvider.enabled(false);
-      }).controller('AppController', function($scope) {
-        $scope.target_url = 'http://www.montevideoshopping.com.uy/innovaportal/v/36517/9/montevideo/mosca_office_.html';
-        $scope.scrape_result = [
-          {key:'foo', val:'bar'},
-          {key:'foo', val:'bar'},
-          {key:'foo', val:'bar'},
-        ];
+      }).controller('AppController', function($scope, $http, $timeout) {
+        var previewDelay = 1000, timeoutId;
+        $scope.targetUrl = '';
+        $scope.previewUrl = '';
+        $scope.scrapeResult = [];
+
+        $scope.$watch('targetUrl', function(newTarget) {
+          // clear previous timeout and renew wait
+          if (timeoutId)
+            $timeout.cancel(timeoutId);
+
+          timeoutId = $timeout(function() {
+            // update model after delay
+            $scope.previewUrl = newTarget;
+          }, previewDelay); // previewDelay in ms
+        });
       });
     </script>
   </body>
