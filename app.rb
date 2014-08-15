@@ -28,27 +28,24 @@ end
 
 # webservice to request parsing and retrieve scraped results
 post '/parse' do
-  content_type 'application/json'
+  # read JSON payload from POST body
+  request.body.rewind
+  request_payload = JSON.parse request.body.read
 
+  # ...create an array to pass to the factory
+  parse_result = []
+  # ...in order to get a Proc to pass to the parser
+  result_proc = result_proc_factory(parse_result)
+  # ...which is able to accumulate the parsed results on the first var
+  generic_parser = EasyParser.new(request_payload['template'], &result_proc)
+  # ...and then parse the target URL
+  generic_parser.run open(request_payload['target'])
+
+  # prepare server response
   response = {}
-  if params.has_key? 'target' and params.has_key? 'template'
-    # ...create an array to pass to the factory
-    parse_result = []
-    # ...in order to get a Proc to pass to the parser
-    result_proc = result_proc_factory(parse_result)
-    # ...which is able to accumulate the parsed results on the first var
-    generic_parser = EasyParser.new(params['template'], &result_proc)
-    # ...and then parse the target URL
-    generic_parser.run open(params['target'])
+  response[:status] = "ok"
+  response[:result] = parse_result
 
-    response[:status] = "ok"
-    response[:result] = parse_result
-  else
-    status 400 # Bad Request
-
-    response[:status]  = "error"
-    response[:message] = "Required parameters: target, template"
-  end
-
+  content_type 'application/json'
   response.to_json
 end

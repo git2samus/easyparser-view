@@ -82,7 +82,7 @@
             <div class="col-sm-12 ep-template">
               <label>Template de EasyParser:</label>
               <div class="aspect-box">
-                <textarea></textarea>
+                <textarea name="ep-template" ng-model="epTemplate"></textarea>
               </div>
             </div>
           </div>
@@ -125,20 +125,42 @@
       ]).config(function($sceProvider) {
         $sceProvider.enabled(false);
       }).controller('AppController', function($scope, $http, $timeout) {
-        var previewDelay = 1000, timeoutId;
-        $scope.targetUrl = '';
-        $scope.previewUrl = '';
-        $scope.scrapeResult = [];
+        var previewDelay = 1000, previewTimeoutId;
+        var templateDelay = 1000, templateTimeoutId;
+
+        var requestScraping = function() {
+          if ($scope.targetUrl && $scope.epTemplate) {
+            $http.post('/parse', {
+              target: $scope.targetUrl,
+              template: $scope.epTemplate,
+            }).success(function(data, status, headers, config) {
+              $scope.scrapeResult = data.result;
+            });
+          };
+        };
 
         $scope.$watch('targetUrl', function(newTarget) {
           // clear previous timeout and renew wait
-          if (timeoutId)
-            $timeout.cancel(timeoutId);
+          if (previewTimeoutId)
+            $timeout.cancel(previewTimeoutId);
 
-          timeoutId = $timeout(function() {
+          previewTimeoutId = $timeout(function() {
             // update model after delay
             $scope.previewUrl = newTarget;
+            // update scraped data
+            requestScraping();
           }, previewDelay); // previewDelay in ms
+        });
+
+        $scope.$watch('epTemplate', function() {
+          // clear previous timeout and renew wait
+          if (templateTimeoutId)
+            $timeout.cancel(templateTimeoutId);
+
+          templateTimeoutId = $timeout(function() {
+            // update scraped data
+            requestScraping();
+          }, templateDelay); // templateDelay in ms
         });
       });
     </script>
