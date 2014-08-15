@@ -6,7 +6,7 @@ herramienta de ayuda para [EasyParser](https://github.com/gusaaaaa/easyparser) d
 
 ## instalacion
 
-despues de clonar el repositorio es necesario inicializar el submodulo, dentro del directorio `easyparser` ejecute los siguientes comandos:
+despues de clonar el repositorio es necesario inicializar el submodulo, para ello debe ejecutar los siguientes comandos:
 
     git submodule init
     git submodule update
@@ -27,7 +27,7 @@ listo!
 
 run tejecute el siguiente comando:
 
-    ruby app.rb
+    bundle exec ruby app.rb
 
 para iniciar un servidor de desarrollo en su maquina local, luego abra un navegador y dirijalo a `http://localhost:4567/` para cargar la aplicacion
 
