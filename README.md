@@ -1,10 +1,12 @@
+**Engligh** - [Español](README-es.md)
+
 # easyparser-view
 
 helper tool for [EasyParser](https://github.com/gusaaaaa/easyparser) by [gusaaaaa](https://github.com/gusaaaaa)
 
 ## installation
 
-after cloning the repo you need to initialize the submodule, withing the `easyparser` directory type:
+after cloning the repo you need to initialize the submodule, within the `easyparser` directory run the following commands:
 
     git submodule init
     git submodule update
@@ -31,4 +33,4 @@ to launch a dev server in your localhost, then open a browser and point it to `h
 
 you'll see two fields, one is for the URL of the page to be scraped and the large text box is for the EasyParser template (please refer to EasyParser's documentation for the syntax)
 
-the app will progressively show you the scraped data below the preview area.
+the app will progressively show you the scraped data below the preview area
